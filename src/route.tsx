@@ -1,7 +1,9 @@
 import { Navigate, Outlet, Route, Routes } from 'react-router-dom';
 
 import Layout from '@/layout';
-import { IconAutomation, IconDashboard, IconFiles, IconList, IconListCheck } from '@tabler/icons-react';
+import { Callback, Login } from '@/pages/auth';
+import DrawLayout from '@/pages/draw';
+import { IconAutomation, IconDashboard, IconFiles, IconList, IconListCheck, IconPalette } from '@tabler/icons-react';
 
 export interface RouteConfig {
   name: string;
@@ -42,17 +44,40 @@ export const routes: RouteConfig[] = [
     icon: IconListCheck,
     component: <Outlet />,
     children: [
-      { name: '任务列表', path: '/tasks/list', icon: IconList, component: <>任务列表</> },
-      { name: '任务列表', path: '/tasks/a', icon: IconList, component: <>任务列表</> },
+      { name: '列表视图', path: '/tasks/list', icon: IconList, component: <>任务列表</> },
+      { name: '日历视图', path: '/tasks/a', icon: IconList, component: <>任务列表</> },
     ],
   },
   { name: '文件', path: '/files', icon: IconFiles, component: <>文件</> },
+  { name: '画板', path: '/draw', icon: IconPalette, component: <DrawLayout /> },
   { name: '自动化', path: '/automation', icon: IconAutomation, component: <>自动化</> },
 ];
 
-export const routeTree = (
+const flattenTree = (tree: RouteConfig[]): RouteConfig[] => {
+  return tree.reduce((result: RouteConfig[], node: RouteConfig) => {
+    result.push(node);
+    if (node.children) {
+      result.push(...flattenTree(node.children));
+    }
+    return result;
+  }, []);
+};
+
+export const flattenRoutes = flattenTree(routes);
+
+export const authedRoutes = (
   <Routes>
     <Route element={<Layout />}>{generateRoutes(routes)}</Route>
     <Route path="/" element={<Navigate to={routes[0].path} replace />} />
+    <Route path="/login" element={<Navigate to="/" replace />} />
+    <Route path="/callback" element={<Callback />} />
+  </Routes>
+);
+
+export const noneAuthedRoutes = (
+  <Routes>
+    <Route path="/login" element={<Login />} />
+    <Route path="/callback" element={<Callback />} />
+    <Route path="*" element={<Navigate to="/login" replace />} />
   </Routes>
 );

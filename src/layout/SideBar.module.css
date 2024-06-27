@@ -3,7 +3,6 @@
   height: 100%;
   display: flex;
   flex-direction: column;
-  border-right: rem(1px) solid light-dark(var(--mantine-color-gray-3), var(--mantine-color-dark-4));
 }
 
 .wrapper {
@@ -12,7 +11,7 @@
 }
 
 .aside {
-  flex: 0 0 rem(60px);
+  width: rem(60px);
   background-color: var(--mantine-color-body);
   display: flex;
   flex-direction: column;
@@ -20,9 +19,19 @@
   border-right: rem(1px) solid light-dark(var(--mantine-color-gray-3), var(--mantine-color-dark-7));
 }
 
+.appPanel {
+  display: flex;
+  flex: 1;
+}
+
+.setting {
+  padding-bottom: var(--mantine-spacing-md);
+}
+
 .main {
   width: rem(240px);
   background-color: light-dark(var(--mantine-color-gray-0), var(--mantine-color-dark-6));
+  border-right: rem(1px) solid light-dark(var(--mantine-color-gray-3), var(--mantine-color-dark-7));
 }
 .mainLink {
   width: rem(44px);
